@@ -1,4 +1,4 @@
-package SLIST;
+//package SLIST;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -135,18 +135,63 @@ public class SLinkedList<T> implements Iterable<T>{
         }
         return tail.data;
     }
-    public void reverse(){
-        
-    //TODO
+    public void reverse(){    
+    
+    Node<T> previous = null;
+    Node<T> current = head;
+    Node<T> next = null;
+
+    tail = head; 
+    while (current != null) {
+        next = current.next;     
+        current.next = previous; 
+        previous = current;      
+        current = next;          
+    }
+    head = previous;
     }
     public void deleteConsecutiveDuplicates(){
-       //TODO
+       if (head == null)
+        return;
+
+    Node<T> current = head;
+
+    while (current.next != null) {
+        if (current.data.equals(current.next.data)) {
+            current.next = current.next.next;
+            size--;
+        } else {
+            current = current.next;
+        }
+    }
+
+    tail = current;
     }
     //two lists are equal if they have the same 
     // size and the same elements in the same order
     @Override
     public boolean equals(Object obj){
-        //TODO
-    }
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
 
+        SLinkedList<?> other = (SLinkedList<?>) obj;
+
+        if (this.size != other.size) return false;
+
+        Node<T> current1 = this.head;
+        SLinkedList<?>.Node<?> current2 = other.head;
+
+        while (current1 != null) {
+            Object data2 = current2.data;
+            if (!current1.data.equals(data2)) return false;
+
+            current1 = current1.next;
+            current2 = current2.next;
+        }
+
+        return true;
+    }
+        
 }
+
+
